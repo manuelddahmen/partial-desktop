@@ -1,0 +1,376 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
+    id 'java-library'
+    id 'maven-publish'
+    id 'org.jreleaser' version '1.14.0'
+    id 'signing'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
+}
+
+Properties properties = new Properties()
+try {
+    // Other configuration here
+    File propertiesFile = new File('../private.properties/gradle.properties')
+    propertiesFile.withInputStream {
+        properties.load(it)
+    }
+} catch (Exception ex) {
+    ex.printStackTrace()
+}
+
+
+Properties propertiesReleaseConfig = new Properties()
+try {
+    // Other configuration here
+    File propertiesFile = new File('C:\\Users\\manue\\.jreleaser\\config.properties')
+    propertiesFile.withInputStream {
+        propertiesReleaseConfig.load(it)
+    }
+} catch (Exception ex) {
+    ex.printStackTrace()
+}
+
+
+
+
+tasks.register('copyDeps', Copy) {
+    from(configurations.compile + configurations.testCompile) {
+        include "**/*.jar"
+        include "**/*.xml"
+        include "**/*.properties"
+        include "**/*.dll"
+        include "**/*.so"
+    }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+jar {
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
+def load = properties
+java {
+    withSourcesJar()
+}
+
+
+signing {
+    def signingKey = load.get("signing.keyId")
+    def signingPassword = load.get("signing.password")
+
+    useGpgCmd()
+    //useInMemoryPgpKeys(signingKey, signingPassword)
+
+    sign publishing.publications
+    sign configurations.archives
+}
+
+group = 'one.empty3.libs'
+version = '0.0.1'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+    maven {
+        url = uri("https://repository.sonatype.org/content/groups/public/")
+    }
+    maven {
+        url = uri("https://mvnrepository.com/")
+    }
+    maven {
+        url = uri("https://maven.scijava.org/content/repositories/public/")
+    }
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
+    maven {
+        url "https://maven.jzy3d.org/releases/"
+    }
+    maven {
+        url "https://www.jetbrains.com/intellij-repository/releases"
+    }
+    flatDir dirs: "${rootDir}/lib"
+}
+
+
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation group: 'one.empty3.libs', name: 'commmons-mp', version: '2024.10.9'
+}
+
+tasks.register('javadocJar', Jar) {
+    dependsOn javadoc
+    archiveClassifier = "javadoc"
+    from javadoc.destinationDir
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
+sourcesJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+tasks.register('copyTask', Copy) {
+    // duplicateStrategy = DuplicatesStrategy.WARN
+    from 'src/main/java/'
+    into 'build/classes/java/main'
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+javadoc {
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+tasks.named('jar') {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+}
+
+tasks.named("processTestResources") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+tasks.named("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+tasks.withType(Jar).configureEach {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+tasks.register("publishAll") {
+    dependsOn(getTasksByName("publishAllPublicationsToJetBrainsSpaceEmpty3Repository", true))
+    dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
+    dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'one.empty3.libs'
+            artifactId = 'partial-desktop'
+            version = '0.0.1'
+            from components.java
+            project.tasks.withType(Sign) {
+                signatures.all {
+
+                }
+            }
+
+            // The pom can be enriched as usual
+            pom {
+                name = 'partial-desktop'
+                description = 'Adaptative class for Java Desktop/Android app . Desktop version'
+                packaging 'jar'
+                url = "https://github.com/manuelddahmen/partial-desktop"
+                version '2024.9.2'
+                inceptionYear = '2024'
+                licenses {
+                    license {
+                        name = "Apache version 2"
+                        url = "https://www.apache.org/licenses/LICENSE-2.0"
+                        distribution = "repo"
+                    }
+                }
+
+                scm {
+
+                    url = "https://github.com/manuelddahmen/partial-desktop"
+                    connection = "scm:git:https://github.com/manuelddahmen/partial-desktop.git"
+                    developerConnection = "scm:git:https://github.com/manuelddahmen/partial-desktop.git"
+
+                }
+                developers {
+                    developer {
+                        email = "manuel.dahmen@gmx.com"
+                        name = "Manuel Daniel Dahmen"
+
+                        url = "https://empty3.one"
+                        id = "manuelddahmen"
+                    }
+                }
+
+            }
+        }
+    }
+
+    repositories {
+        /*  maven {
+              name = "JetBrainsSpaceEmpty3"
+              url = "https://maven.pkg.jetbrains.space/empty3/p/empty3/maven/maven"
+              credentials {
+                  // Automation has a special account for authentication in Space
+                  // account credentials are accessible via env vars
+                  username = load.get("spaceUsername")
+                  password = load.get("spacePassword")
+              }
+
+          }*/
+        /*maven {
+            name = "OSSRH"
+            url = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials {
+                username = load.get("ossrhUsername")
+                password = load.get("ossrhPassword")
+            }
+
+        }*/
+/*
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/manuelddahmen/empty3_miror")
+            credentials {
+                username = load.get("GITHUB_ACTOR")
+                password = load.get("GITHUB_TOKEN")
+            }
+        }*/
+        maven {
+            url = layout.buildDirectory.dir('staging-deploy')
+        }
+
+    }
+}
+
+jreleaser {
+    signing {
+
+        active = 'ALWAYS'
+        armored = true
+        mode = 'FILE'
+        publicKey = load.get('signing.publicKeyPath')
+        passphrase = load.get('signing.passphrase')
+        secretKey = load.get('signing.secretKey')
+        release.github.token = load.get('release.github.token')
+
+    }
+    project {
+        name = 'partial-desktop'
+        java.artifactId = 'partial-desktop'
+        java.groupId = 'one.empty3.libs'
+        java.version = '0.0.1'
+        version = '0.0.1'
+        license = 'Apache-2.0'
+        authors = ['Manuel D DAHMEN']
+        description = 'Adaptative class for Java Desktop/Android app . Desktop version'
+        icon {
+            // Publicly available URL. PNG format is preferred.
+            //
+            url = 'https://empty3.one/favicon.ico'
+            // Marks this icon as the primary one.
+            // Only a single icon may be set as primary.
+            //
+            primary = true
+            // Image width in pixels.
+            //
+            width = 47
+            // Image height in pixels.
+            //
+            height = 47
+        }
+    }
+
+    deploy {
+        maven {
+            // Enable or disable all configured deployers.
+            // Supported values are [`NEVER`, `ALWAYS`, `RELEASE`, `SNAPSHOT`].
+            // Defaults to `ALWAYS`.
+            //
+            active = 'ALWAYS'
+            pomchecker {
+                // Defines the tool version to use.
+                //
+                version = '1.11.0'
+
+                // Fail the release if pomchecker outputs a warning.
+                // Defaults to `true`.
+                //
+                failOnWarning = false
+
+                // Fail the release if pomchecker outputs an error.
+                // Defaults to `true`.
+                //
+                failOnError = false
+            }
+            mavenCentral {
+                app {
+                    active = 'ALWAYS'
+                    url = 'https://central.sonatype.com/api/v1/publisher'
+                    gitRootSearch = false
+                    stagingRepository('build/staging-deploy')
+                    username = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_USERNAME')
+                    authorization = 'BASIC'
+                    // Password for login into the MAVENCENTRAL service.
+                    //
+                    password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
+                    // List of directories where staged artifacts can be found.
+                    stagingRepository('build/staging-deploy')
+
+                    // Defines the connection timeout in seconds.
+                    // Defaults to `20`.
+                    //
+                    connectTimeout = 20
+
+                    // Defines the read timeout in seconds.
+                    // Defaults to `60`.
+                    //
+                    readTimeout = 60
+
+                    // Additional properties used when evaluating templates.
+                    // Key will be capitalized and prefixed with `mavenCentral`, i.e, `mavenCentralFoo`.
+                    //
+                    extraProperties.put('foo', 'bar')
+
+                    // Registered publication namespace.
+                    // Defaults to `${project.java.groupId}`.
+                    //
+                    namespace = 'one.empty3.libs'
+
+                    // Deployment identifier used for publication.
+                    //
+                    deploymentId = '242a09a3-285e-426f-a487-3c2287b079ad'
+
+                    // Time to wait between state transition checks, in seconds.
+                    // Defaults to `10`.
+                    //
+                    retryDelay = 10
+
+                    // Maximum number of attempts to verify state transition.
+                    // Defaults to `60`.
+                    //
+                    maxRetries = 60
+                }
+            }
+        }
+    }
+    upload {
+        // Enable or disable all configured uploaders.
+        // Supported values are [`NEVER`, `ALWAYS`, `RELEASE`, `SNAPSHOT`].
+        // Defaults to `ALWAYS`.
+        //
+        active = 'ALWAYS'
+    }
+}
