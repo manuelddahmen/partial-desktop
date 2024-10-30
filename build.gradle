@@ -108,11 +108,12 @@ repositories {
 
 
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation group: 'one.empty3.libs', name: 'commmons-mp', version: '2024.10.9'
+    implementation 'one.empty3.libs:commmons-mp:0.0.2'
 }
 
 tasks.register('javadocJar', Jar) {
@@ -187,7 +188,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '2024.9.2'
+                version '0.0.1'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -275,7 +276,7 @@ jreleaser {
         version = '0.0.1'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
-        description = 'Adaptative class for Java Desktop/Android app . Desktop version'
+        description = 'Adaptive class for Java Desktop/Android app . Desktop version'
         icon {
             // Publicly available URL. PNG format is preferred.
             //
@@ -327,7 +328,7 @@ jreleaser {
                     //
                     password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     // List of directories where staged artifacts can be found.
-                    stagingRepository('build/staging-deploy')
+                    stagingRepository('target/staging-deploy')
 
                     // Defines the connection timeout in seconds.
                     // Defaults to `20`.
