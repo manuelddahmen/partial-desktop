@@ -6,6 +6,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Image extends BufferedImage implements IImageMp {
     private BufferedImage bi;
@@ -21,6 +23,27 @@ public class Image extends BufferedImage implements IImageMp {
     public int getRgb(int x, int y) {
         return bi.getRGB(x, y);
     }
+
+    public IImageMp getFromFile(File file) {
+        try {
+            return new Image(ImageIO.read(file));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean saveToFile(String s) {
+        try {
+            if(ImageIO.write(this, s.substring(s.lastIndexOf(".")+1), new File(s)));
+            return true;
+        } catch (IOException e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Image not save to file"+toString()+"///"+s);
+            return false;
+        }
+    }
+
 
     @Override
     public void setImageToMatrix(int[][] ints) {

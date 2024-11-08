@@ -10,7 +10,7 @@ public class Color extends java.awt.Color implements IColorMp {
         super(color.getRGB());
     }
 
-    public Object getColorObject() {
+    public Color getColorObject() {
         return this;
     }
 
