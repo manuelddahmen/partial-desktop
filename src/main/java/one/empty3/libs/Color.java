@@ -34,4 +34,11 @@ public class Color extends java.awt.Color implements IColorMp {
     public int getBlue() {
         return super.getBlue();
     }
+    public int getAlpha() {
+        return super.getAlpha();
+    }
+
+    public float color() {
+        return 1.0f;
+    }
 }
