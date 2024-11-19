@@ -20,6 +20,10 @@ public class Image extends BufferedImage implements IImageMp {
         super(x, y, type);
         this.bi = new BufferedImage(x, y, type);
     }
+    public Image(int x, int y) {
+        super(x,y,BufferedImage.TYPE_INT_ARGB);
+        bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+    }
     public int getRgb(int x, int y) {
         return bi.getRGB(x, y);
     }

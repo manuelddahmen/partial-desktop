@@ -66,7 +66,7 @@ signing {
 }
 
 group = 'one.empty3.libs'
-version = '0.0.4'
+version = '0.0.5'
 
 java {
     toolchain {
@@ -173,8 +173,8 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3.libs'
-            artifactId = 'partial-desktop'
-            version = '0.0.4'
+            artifactId = 'partialdesktop'
+            version = '0.0.5'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -188,7 +188,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '0.0.4'
+                version '0.0.5'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -272,8 +272,8 @@ jreleaser {
         name = 'partial-desktop'
         java.artifactId = 'partial-desktop'
         java.groupId = 'one.empty3.libs'
-        java.version = '0.0.4'
-        version = '0.0.4'
+        java.version = '0.0.5'
+        version = '0.0.5'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = 'Adaptive class for Java Desktop/Android app . Desktop version'
@@ -328,7 +328,6 @@ jreleaser {
                     //
                     password = propertiesReleaseConfig.get('JRELEASER_MAVENCENTRAL_PASSWORD')
                     // List of directories where staged artifacts can be found.
-                    stagingRepository('target/staging-deploy')
 
                     // Defines the connection timeout in seconds.
                     // Defaults to `20`.
