@@ -66,7 +66,7 @@ signing {
 }
 
 group = 'one.empty3.libs'
-version = '0.0.5'
+version = '0.0.6'
 
 java {
     toolchain {
@@ -173,8 +173,8 @@ publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3.libs'
-            artifactId = 'partialdesktop'
-            version = '0.0.5'
+            artifactId = 'partial-desktop'
+            version = '0.0.6'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -188,7 +188,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '0.0.5'
+                version '0.0.6'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -272,8 +272,8 @@ jreleaser {
         name = 'partial-desktop'
         java.artifactId = 'partial-desktop'
         java.groupId = 'one.empty3.libs'
-        java.version = '0.0.5'
-        version = '0.0.5'
+        java.version = '0.0.6'
+        version = '0.0.6'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = 'Adaptive class for Java Desktop/Android app . Desktop version'
@@ -339,10 +339,6 @@ jreleaser {
                     //
                     readTimeout = 60
 
-                    // Additional properties used when evaluating templates.
-                    // Key will be capitalized and prefixed with `mavenCentral`, i.e, `mavenCentralFoo`.
-                    //
-                    extraProperties.put('foo', 'bar')
 
                     // Registered publication namespace.
                     // Defaults to `${project.java.groupId}`.
