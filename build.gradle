@@ -1,13 +1,13 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.4'
-    id 'io.spring.dependency-management' version '1.1.6'
     id 'java-library'
     id 'maven-publish'
     id 'org.jreleaser' version '1.14.0'
     id 'signing'
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
+group = 'one.empty3.libs'
+version = '0.0.6'
 
 Properties properties = new Properties()
 try {
@@ -33,18 +33,46 @@ try {
 }
 
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/java'
+            srcDirs 'src/test/java'
+        }
+        resources {
+            srcDirs "src/main/resources", "src/main/configs", "src/main/java"
+        }
+    }
+    test {
+        java {
+            srcDirs 'src/test/java'
+            srcDirs 'src/main/java'
+        }
+        resources {
+            srcDirs "src/test/resources", "src/test/configs", "src/test/java"
+        }
+        mainClasses {
+        }
+    }
+    main.kotlin.srcDirs += 'src/main/kotlin'
+    main.kotlin.srcDirs += 'src/main/java'
+    test.kotlin.srcDirs += 'test/main/kotlin'
+    test.kotlin.srcDirs += 'test/main/java'
+    test.java.srcDirs += 'src/test/java'
+    test.java.srcDirs += 'src/main/java'
+}
 
 
-//tasks.register('copyDeps', Copy) {
-//    from(configurations.compile + configurations.testCompile) {
-//        include "**/*.jar"
-//        include "**/*.xml"
-//        include "**/*.properties"
-//        include "**/*.dll"
-//        include "**/*.so"
-//    }
-//    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-//}
+tasks.register('copyDeps', Copy) {
+    from(configurations.compile + configurations.testCompile) {
+        include "**/*.jar"
+        include "**/*.xml"
+        include "**/*.properties"
+        include "**/*.dll"
+        include "**/*.so"
+    }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
@@ -65,8 +93,6 @@ signing {
     sign configurations.archives
 }
 
-group = 'one.empty3.libs'
-version = '0.0.6'
 
 java {
     toolchain {
@@ -110,8 +136,8 @@ repositories {
 
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    //implementation 'org.springframework.boot:spring-boot-starter'
+    //testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'one.empty3.libs:commons-mp:0.0.6'
 }
@@ -126,6 +152,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+
+test {
+    useJUnitPlatform()
+}
 
 sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
