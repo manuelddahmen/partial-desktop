@@ -4,10 +4,9 @@ plugins {
     id 'maven-publish'
     id 'org.jreleaser' version '1.14.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
 group = 'one.empty3.libs'
-version = '0.0.6'
+version = '0.0.7'
 
 Properties properties = new Properties()
 try {
@@ -33,46 +32,18 @@ try {
 }
 
 
-sourceSets {
-    main {
-        java {
-            srcDirs 'src/main/java'
-            srcDirs 'src/test/java'
-        }
-        resources {
-            srcDirs "src/main/resources", "src/main/configs", "src/main/java"
-        }
-    }
-    test {
-        java {
-            srcDirs 'src/test/java'
-            srcDirs 'src/main/java'
-        }
-        resources {
-            srcDirs "src/test/resources", "src/test/configs", "src/test/java"
-        }
-        mainClasses {
-        }
-    }
-    main.kotlin.srcDirs += 'src/main/kotlin'
-    main.kotlin.srcDirs += 'src/main/java'
-    test.kotlin.srcDirs += 'test/main/kotlin'
-    test.kotlin.srcDirs += 'test/main/java'
-    test.java.srcDirs += 'src/test/java'
-    test.java.srcDirs += 'src/main/java'
-}
 
 
-tasks.register('copyDeps', Copy) {
-    from(configurations.compile + configurations.testCompile) {
-        include "**/*.jar"
-        include "**/*.xml"
-        include "**/*.properties"
-        include "**/*.dll"
-        include "**/*.so"
-    }
-    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-}
+//tasks.register('copyDeps', Copy) {
+//    from(configurations.compile + configurations.testCompile) {
+//        include "**/*.jar"
+//        include "**/*.xml"
+//        include "**/*.properties"
+//        include "**/*.dll"
+//        include "**/*.so"
+//    }
+//    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+//}
 jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
@@ -153,10 +124,6 @@ tasks.named('test') {
 }
 
 
-test {
-    useJUnitPlatform()
-}
-
 sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
@@ -204,7 +171,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3.libs'
             artifactId = 'partial-desktop'
-            version = '0.0.6'
+            version = '0.0.7'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -218,7 +185,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '0.0.6'
+                version '0.0.7'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -302,8 +269,8 @@ jreleaser {
         name = 'partial-desktop'
         java.artifactId = 'partial-desktop'
         java.groupId = 'one.empty3.libs'
-        java.version = '0.0.6'
-        version = '0.0.6'
+        java.version = '0.0.7'
+        version = '0.0.7'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = 'Adaptive class for Java Desktop/Android app . Desktop version'
