@@ -1,12 +1,15 @@
 plugins {
-    id 'java'
+    id("application") // enabling the plugin here
+    id("java")
     id 'java-library'
     id 'maven-publish'
     id 'org.jreleaser' version '1.14.0'
     id 'signing'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
 group = 'one.empty3.libs'
 version = '0.0.7'
+
 
 Properties properties = new Properties()
 try {
@@ -50,6 +53,7 @@ jar {
 def load = properties
 java {
     withSourcesJar()
+    withJavadocJar()
 }
 
 
@@ -73,38 +77,6 @@ java {
 
 
 
-repositories {
-    google()
-    mavenCentral()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    maven {
-        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    }
-    maven {
-        url = uri("https://repository.sonatype.org/content/groups/public/")
-    }
-    maven {
-        url = uri("https://mvnrepository.com/")
-    }
-    maven {
-        url = uri("https://maven.scijava.org/content/repositories/public/")
-    }
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
-    maven {
-        url "https://maven.jzy3d.org/releases/"
-    }
-    maven {
-        url "https://www.jetbrains.com/intellij-repository/releases"
-    }
-    flatDir dirs: "${rootDir}/lib"
-}
-
-
-
 
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter'
@@ -119,14 +91,11 @@ tasks.register('javadocJar', Jar) {
     from javadoc.destinationDir
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-
 sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+
 
 tasks.register('copyTask', Copy) {
     // duplicateStrategy = DuplicatesStrategy.WARN
@@ -164,6 +133,37 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishAllPublicationsToOSSRHRepository", true))
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
+
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+    maven {
+        url = uri("https://repository.sonatype.org/content/groups/public/")
+    }
+    maven {
+        url = uri("https://mvnrepository.com/")
+    }
+    maven {
+        url = uri("https://maven.scijava.org/content/repositories/public/")
+    }
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
+    maven {
+        url "https://maven.jzy3d.org/releases/"
+    }
+    maven {
+        url "https://www.jetbrains.com/intellij-repository/releases"
+    }
+    flatDir dirs: "${rootDir}/lib"
+}
+
 
 
 publishing {
@@ -252,6 +252,9 @@ publishing {
 
     }
 }
+
+
+
 
 jreleaser {
     signing {
