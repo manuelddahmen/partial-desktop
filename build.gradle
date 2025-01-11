@@ -8,7 +8,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
 group = 'one.empty3.libs'
-version = '0.0.7'
+version = '0.0.9'
 
 
 Properties properties = new Properties()
@@ -37,16 +37,16 @@ try {
 
 
 
-//tasks.register('copyDeps', Copy) {
-//    from(configurations.compile + configurations.testCompile) {
-//        include "**/*.jar"
-//        include "**/*.xml"
-//        include "**/*.properties"
-//        include "**/*.dll"
-//        include "**/*.so"
-//    }
-//    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
-//}
+tasks.register('copyDeps', Copy) {
+    from(configurations.compile + configurations.testCompile) {
+        include "**/*.jar"
+        include "**/*.xml"
+        include "**/*.properties"
+        include "**/*.dll"
+        include "**/*.so"
+    }
+    duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
+}
 jar {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
 }
@@ -64,8 +64,8 @@ signing {
     useGpgCmd()
     //useInMemoryPgpKeys(signingKey, signingPassword)
 
-    sign publishing.publications
-    sign configurations.archives
+    //sign publishing.publications
+    //sign configurations.archives
 }
 
 
@@ -84,13 +84,13 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'one.empty3.libs:commons-mp:0.0.6'
 }
-
+/*
 tasks.register('javadocJar', Jar) {
     dependsOn javadoc
     archiveClassifier = "javadoc"
     from javadoc.destinationDir
 }
-
+*/
 sourcesJar {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
@@ -134,44 +134,24 @@ tasks.register("publishAll") {
     dependsOn(getTasksByName("publishMavenPublicationToMavenLocal", true))
 }
 
-repositories {
-    google()
-    mavenCentral()
-    maven {
-        url = uri("https://repo.maven.apache.org/maven2/")
-    }
-    maven {
-        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-    }
-    maven {
-        url = uri("https://repository.sonatype.org/content/groups/public/")
-    }
-    maven {
-        url = uri("https://mvnrepository.com/")
-    }
-    maven {
-        url = uri("https://maven.scijava.org/content/repositories/public/")
-    }
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
-    maven {
-        url "https://maven.jzy3d.org/releases/"
-    }
-    maven {
-        url "https://www.jetbrains.com/intellij-repository/releases"
-    }
-    flatDir dirs: "${rootDir}/lib"
+
+
+signing {
+    def signingKey = load.get("signing.keyId")
+    def signingPassword = load.get("signing.password")
+
+    useGpgCmd()
+    //useInMemoryPgpKeys(signingKey, signingPassword)
+
+    //sign publishing.publications
+    //sign configurations.archives
 }
-
-
-
 publishing {
     publications {
         maven(MavenPublication) {
             groupId = 'one.empty3.libs'
             artifactId = 'partial-desktop'
-            version = '0.0.7'
+            version = '0.0.9'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -185,7 +165,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '0.0.7'
+                version '0.0.9'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -253,6 +233,36 @@ publishing {
     }
 }
 
+repositories {
+    google()
+    mavenCentral()
+    maven {
+        url = uri("https://repo.maven.apache.org/maven2/")
+    }
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+    maven {
+        url = uri("https://repository.sonatype.org/content/groups/public/")
+    }
+    maven {
+        url = uri("https://mvnrepository.com/")
+    }
+    maven {
+        url = uri("https://maven.scijava.org/content/repositories/public/")
+    }
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
+    maven {
+        url "https://maven.jzy3d.org/releases/"
+    }
+    maven {
+        url "https://www.jetbrains.com/intellij-repository/releases"
+    }
+    flatDir dirs: "${rootDir}/lib"
+}
+
 
 
 
@@ -272,8 +282,8 @@ jreleaser {
         name = 'partial-desktop'
         java.artifactId = 'partial-desktop'
         java.groupId = 'one.empty3.libs'
-        java.version = '0.0.7'
-        version = '0.0.7'
+        java.version = '0.0.9'
+        version = '0.0.9'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = 'Adaptive class for Java Desktop/Android app . Desktop version'

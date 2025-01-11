@@ -40,12 +40,14 @@ public class Image extends BufferedImage implements IImageMp {
     @Override
     public boolean saveToFile(String s) {
         try {
-            if(ImageIO.write(this, s.substring(s.lastIndexOf(".")+1), new File(s)));
-            return true;
+            if(ImageIO.write(bi, "jpg", new File(s))) {
+                return true;
+            }
         } catch (IOException e) {
             Logger.getAnonymousLogger().log(Level.SEVERE, "Image not save to file"+toString()+"///"+s);
-            return false;
+            throw new RuntimeException(e);
         }
+        return false;
     }
 
 
@@ -69,10 +71,10 @@ public class Image extends BufferedImage implements IImageMp {
             throw new RuntimeException(e);
         }
     }
-    public void saveFile(Images images, File path) {
+    public void saveFile(File path) {
 
         try {
-            ImageIO.write(bi, path.getAbsolutePath().substring(path.getAbsolutePath().lastIndexOf("."+1)),
+            ImageIO.write(bi, "jpg",
                     path);
         } catch (IOException e) {
             throw new RuntimeException(e);
