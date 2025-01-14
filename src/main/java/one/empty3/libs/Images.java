@@ -11,7 +11,7 @@ public class Images {
         this.image = image;
     }
     public Images(int x, int y) {
-        this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+        this.image = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
 
 

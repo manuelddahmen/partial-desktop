@@ -21,8 +21,8 @@ public class Image extends BufferedImage implements IImageMp {
         this.bi = new BufferedImage(x, y, type);
     }
     public Image(int x, int y) {
-        super(x,y,BufferedImage.TYPE_INT_ARGB);
-        bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
+        super(x,y,BufferedImage.TYPE_INT_RGB);
+        bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
     public int getRgb(int x, int y) {
         return bi.getRGB(x, y);
@@ -35,6 +35,10 @@ public class Image extends BufferedImage implements IImageMp {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    public BufferedImage getBi() {
+        return bi;
     }
 
     @Override
