@@ -1,6 +1,7 @@
 package one.empty3.libs;
 
 import one.empty3.libs.commons.IImageMp;
+import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -41,6 +42,11 @@ public class Image extends BufferedImage implements IImageMp {
         return bi;
     }
 
+    public void setBi(BufferedImage bi) {
+        this.bi = bi;
+    }
+
+
     @Override
     public boolean saveToFile(String s) {
         try {
@@ -68,11 +74,13 @@ public class Image extends BufferedImage implements IImageMp {
     public void setRgb(int x, int y, int rgb) {
         bi.setRGB(x, y, rgb);
     }
-    public void loadFile(File path) {
+
+    public static IImageMp loadFile(File path) {
         try {
-            bi = ImageIO.read(path);
+            return new Image(ImageIO.read(path));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger.getAnonymousLogger().log(Level.SEVERE, "Image not load from file"+path);
+            return null;
         }
     }
     public void saveFile(File path) {
@@ -83,5 +91,14 @@ public class Image extends BufferedImage implements IImageMp {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static Image staticLoadFile(File path) {
+        Image image = new Image(null);
+        try {
+            image.setBi(ImageIO.read(path));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return image;
     }
 }

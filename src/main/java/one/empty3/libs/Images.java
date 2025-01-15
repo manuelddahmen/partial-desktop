@@ -25,6 +25,14 @@ public class Images {
     }
 
 
+    public static Image loadFile(File path) {
+        try {
+            BufferedImage read = ImageIO.read(path);
+            return new Image(read);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public static boolean save(Images images, File path) {
         try {
             return ImageIO.write(images.image, "png", path);
