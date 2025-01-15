@@ -75,6 +75,12 @@ public class Image extends BufferedImage implements IImageMp {
         bi.setRGB(x, y, rgb);
     }
 
+    public static void saveFile(BufferedImage image, String jpg,File out,
+                                 boolean shouldOverwrite) {
+        Image iimage = new Image(image);
+        iimage.saveFile(out);
+    }
+
     public static IImageMp loadFile(File path) {
         try {
             return new Image(ImageIO.read(path));
