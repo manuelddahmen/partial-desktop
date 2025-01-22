@@ -14,15 +14,15 @@ public class Image extends BufferedImage implements IImageMp {
     private BufferedImage bi;
 
     public Image(BufferedImage image) {
-        super(1, 1, 1);
+        super(1, 1, BufferedImage.TYPE_INT_RGB);
         this.bi = image;
     }
     public Image(int x, int y, int type) {
         super(x, y, type);
-        this.bi = new BufferedImage(x, y, type);
+        this.bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
     public Image(int x, int y) {
-        super(x,y,BufferedImage.TYPE_INT_RGB);
+        super(1,1,BufferedImage.TYPE_INT_RGB);
         bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
     public int getRgb(int x, int y) {
