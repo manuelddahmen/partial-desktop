@@ -17,6 +17,15 @@ public class Image extends BufferedImage implements IImageMp {
         super(1, 1, BufferedImage.TYPE_INT_RGB);
         this.bi = image;
     }
+
+    public Image(File image) {
+        super(1, 1, BufferedImage.TYPE_INT_RGB);
+        try {
+            this.bi = ImageIO.read(image);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     public Image(int x, int y, int type) {
         super(x, y, type);
         this.bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
@@ -29,7 +38,7 @@ public class Image extends BufferedImage implements IImageMp {
         return bi.getRGB(x, y);
     }
 
-    public IImageMp getFromFile(File file) {
+    public static IImageMp getFromFile(File file) {
         try {
             return new Image(ImageIO.read(file));
         } catch (Exception ex) {
@@ -37,6 +46,9 @@ public class Image extends BufferedImage implements IImageMp {
             return null;
         }
     }
+
+
+
 
     public BufferedImage getBi() {
         return bi;
@@ -99,7 +111,7 @@ public class Image extends BufferedImage implements IImageMp {
         }
     }
     public static Image staticLoadFile(File path) {
-        Image image = new Image(null);
+        Image image = new Image(path);
         try {
             image.setBi(ImageIO.read(path));
         } catch (IOException e) {
