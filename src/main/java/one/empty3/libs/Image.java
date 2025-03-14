@@ -7,6 +7,8 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,7 +48,28 @@ public class Image extends BufferedImage implements IImageMp {
             return null;
         }
     }
-
+    public static IImageMp getFromInputStream(InputStream stream) {
+        try {
+            BufferedImage write;
+            if((write = ImageIO.read(stream))!=null) {
+                return new Image(write);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+    public boolean toOutputStream(OutputStream stream) {
+        try {
+            boolean write = false;
+            if(write == ImageIO.write((null != this.bi) ? bi : this, "jpg", stream)) {
+                return true;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
 
 
 
