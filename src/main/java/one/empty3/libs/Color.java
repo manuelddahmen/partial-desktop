@@ -27,7 +27,7 @@ public class Color extends java.awt.Color implements IColorMp {
     }
     @Override
     public int getColor() {
-        return this.getRGB();
+        return this.getRGB()& 0x00FFFFFF;
     }
 
     public static Color newCol(float r1, float r2, float r3) {
@@ -36,7 +36,7 @@ public class Color extends java.awt.Color implements IColorMp {
     }
 
     public int getRGB() {
-        return super.getRGB();
+        return super.getRGB() & 0x00FFFFFF;
     }
     public int getRed() {
         return super.getRed();
