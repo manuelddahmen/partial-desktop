@@ -37,7 +37,7 @@ public class Image extends BufferedImage implements IImageMp {
         bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
     }
     public int getRgb(int x, int y) {
-        return bi.getRGB(x, y);
+        return bi!=null?bi.getRGB(x, y):this.getRGB(x, y);
     }
 
     public static IImageMp getFromFile(File file) {
