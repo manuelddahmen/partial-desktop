@@ -72,32 +72,33 @@ public class Image extends BufferedImage implements IImageMp {
         return false;
     }
 
-    static BufferedImage convertToRGB(BufferedImage image) {
+    public static Image convertToRGB(BufferedImage image) {
         BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        if(image instanceof Image image1)
+        if(image instanceof Image image1) {
             rgbImage.createGraphics().drawImage(image1.getBi(), 0, 0, null);
-        else
+        } else {
             rgbImage.createGraphics().drawImage(image, 0, 0, null);
-
-        return rgbImage;
+        }
+        return new Image(rgbImage);
     }
 
     public BufferedImage getBi() {
-        return bi;
+        return convertToRGB(bi);
     }
 
     public void setBi(BufferedImage bi) {
         this.bi = bi;
     }
 
+    private BufferedImage convertToARGB(BufferedImage bi) {
+        return null;
+    }
+
 
     @Override
     public boolean saveToFile(String s) throws IOException {
         Logger.getLogger(getClass().getCanonicalName()).info("Saving as png");
-        if(ImageIO.write(convertToRGB(bi), "png", new File(s))) {
-            return true;
-        }
-        return false;
+        return ImageIO.write(convertToRGB(bi), "png", new File(s));
     }
 
 
