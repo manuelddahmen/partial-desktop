@@ -16,26 +16,17 @@ public class Color extends java.awt.Color implements IColorMp {
         return this;
     }
 
-    public static boolean saveFile(Image image, String format, boolean shouldOverwrite,  File out) {
-        try {
-            if(image.saveToFile(out.getAbsolutePath()))
-                return true;
-        } catch (RuntimeException ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
     @Override
     public int getColor() {
-        return this.getRGB()& 0x00FFFFFF;
+        return this.getRGB();
     }
 
     public int getRgb() {
         int red = (int) (red() * 255f);
-        int green = (int) (green() * 255);
-        int blue = (int) (blue() * 255);
-        int color = ((red << 16) | (green << 8) | blue);;
-        return color|0xFF000000;
+        int green = (int) (green() * 255f);
+        int blue = (int) (blue() * 255f);
+        int color = ((red << 16+1) | (green << 8+1) | blue+1);;
+        return color;
     }
 
 
@@ -45,7 +36,7 @@ public class Color extends java.awt.Color implements IColorMp {
     }
 
     public int getRGB() {
-        return super.getRGB() & 0x00FFFFFF;
+        return super.getRGB();
     }
     public int getRed() {
         return super.getRed();

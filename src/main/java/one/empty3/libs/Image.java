@@ -16,12 +16,12 @@ public class Image extends BufferedImage implements IImageMp {
     private BufferedImage bi;
 
     public Image(BufferedImage image) {
-        super(1, 1, BufferedImage.TYPE_INT_RGB);
+        super(1, 1, image.getType());
         this.bi = image;
     }
 
     public Image(File image) {
-        super(1, 1, BufferedImage.TYPE_INT_RGB);
+        super(1, 1, BufferedImage.TYPE_INT_ARGB);
         try {
             this.bi = ImageIO.read(image);
         } catch (IOException e) {
@@ -30,14 +30,14 @@ public class Image extends BufferedImage implements IImageMp {
     }
     public Image(int x, int y, int type) {
         super(x, y, type);
-        this.bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
+        this.bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
     }
     public Image(int x, int y) {
-        super(1,1,BufferedImage.TYPE_INT_RGB);
-        bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
+        super(1,1,BufferedImage.TYPE_INT_ARGB);
+        bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
     }
     public int getRgb(int x, int y) {
-        return bi!=null?bi.getRGB(x, y)&0x00FFFFFF:this.getRGB(x, y)&0x00FFFFFF;
+        return bi!=null?bi.getRGB(x, y):this.getRGB(x, y);
     }
 
     public static IImageMp getFromFile(File file) {
@@ -125,12 +125,10 @@ public class Image extends BufferedImage implements IImageMp {
         }
     }
     public void saveFile(File path) {
-
-        try {
-            ImageIO.write(bi, "jpg",
-                    path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(saveToFile(path.getAbsolutePath())) {
+            System.out.println("Image saved to "+path.getAbsolutePath());
+        } else {
+            System.out.println("Image not saved to "+path.getAbsolutePath());
         }
     }
     public static Image staticLoadFile(File path) {
@@ -141,5 +139,15 @@ public class Image extends BufferedImage implements IImageMp {
             throw new RuntimeException(e);
         }
         return image;
+    }
+
+    @Override
+    public int getWidth() {
+        return bi.getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return bi.getHeight();
     }
 }
