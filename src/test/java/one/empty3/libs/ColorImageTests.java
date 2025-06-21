@@ -23,7 +23,7 @@ public class ColorImageTests {
         }
         try {
             // Créer une image temporaire pour le test
-            File tempImageFile = new File(tempDir, "test-image.jpg");
+            File tempImageFile = new File(tempDir, "test-image.png");
             BufferedImage bufferedImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
 
             // Dessiner quelque chose dans l'image
@@ -34,7 +34,7 @@ public class ColorImageTests {
             }
 
             // Sauvegarder l'image
-            if(ImageIO.write(bufferedImage, "jpg", tempImageFile)){
+            if(ImageIO.write(Image.convertToRGB(bufferedImage), "png", tempImageFile)){
                 System.err.println("Image saved to "+tempImageFile.getAbsolutePath());
             } else {
                 System.err.println("Image not saved to "+tempImageFile.getAbsolutePath());
@@ -48,9 +48,10 @@ public class ColorImageTests {
             Assert.assertNotNull("L'image chargée ne devrait pas être null", image.getBi());
             Assert.assertEquals("La largeur de l'image devrait être 100", 100, image.getWidth());
             Assert.assertEquals("La hauteur de l'image devrait être 100", 100, image.getHeight());
-            System.err.println(image.getRgb(50, 50));
             Assert.assertEquals("La couleur du pixel (50,50) devrait être rouge", 0x00FF0000 , bufferedImage.getRGB(50, 50));
             Assert.assertEquals("La couleur du pixel (50,50) devrait être rouge", Color.RED.getRGB() , image.getRgb(50, 50));
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // Nettoyer les fichiers temporaires
             deleteDirectory(tempDir);
@@ -75,7 +76,7 @@ public class ColorImageTests {
             }
 
             // Sauvegarder l'image
-            File savedImageFile = new File(tempDir, "saved-image.jpg");
+            File savedImageFile = new File(tempDir, "saved-image.png");
             if(image.saveToFile(savedImageFile.getAbsolutePath())) {
                 System.err.println("Image saved to "+savedImageFile.getAbsolutePath());
             } else {
@@ -93,6 +94,8 @@ public class ColorImageTests {
             Assert.assertEquals("La hauteur de l'image devrait être 150", 150, loadedImage.getHeight());
             System.err.println(loadedImage.getRGB(50, 50));
             //Assert.assertEquals("La couleur du pixel (100,75) devrait être bleue", Color.BLUE.getRGB() & 0x00FFFFFF, loadedImage.getRGB(100, 75) & 0x00FFFFFF);
+        } catch (IOException e) {
+            e.printStackTrace();
         } finally {
             // Nettoyer les fichiers temporaires
             deleteDirectory(tempDir);

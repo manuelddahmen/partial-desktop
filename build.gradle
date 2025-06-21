@@ -8,7 +8,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 }
 group = 'one.empty3.libs'
-version = '0.0.26'
+version = '0.0.27'
 
 
 Properties properties = new Properties()
@@ -81,7 +81,7 @@ java {
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.8.2'
-    implementation 'one.empty3.libs:commons-mp:0.0.10'
+    implementation 'one.empty3.libs:commons-mp:0.0.11'
     testImplementation 'junit:junit:4.13.1'// <--- ADD THIS LINE
 }
 /*
@@ -151,7 +151,7 @@ publishing {
         maven(MavenPublication) {
             groupId = 'one.empty3.libs'
             artifactId = 'partial-desktop'
-            version = '0.0.26'
+            version = '0.0.27'
             from components.java
             project.tasks.withType(Sign) {
                 signatures.all {
@@ -165,7 +165,7 @@ publishing {
                 description = 'Adaptative class for Java Desktop/Android app . Desktop version'
                 packaging 'jar'
                 url = "https://github.com/manuelddahmen/partial-desktop"
-                version '0.0.26'
+                version '0.0.27'
                 inceptionYear = '2024'
                 licenses {
                     license {
@@ -282,8 +282,8 @@ jreleaser {
         name = 'partial-desktop'
         java.artifactId = 'partial-desktop'
         java.groupId = 'one.empty3.libs'
-        java.version = '0.0.26'
-        version = '0.0.26'
+        java.version = '0.0.27'
+        version = '0.0.27'
         license = 'Apache-2.0'
         authors = ['Manuel D DAHMEN']
         description = 'Adaptive class for Java Desktop/Android app . Desktop version'
