@@ -5,10 +5,12 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,33 +74,41 @@ public class Image extends BufferedImage implements IImageMp {
         return false;
     }
 
-    public static Image convertToRGB(BufferedImage image) {
-        BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+    public static BufferedImage convertToRGB(BufferedImage image) {
+        return image;
+        /*BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
         if(image instanceof Image image1) {
-            rgbImage.createGraphics().drawImage(image1.getBi(), 0, 0, null);
+            rgbImage.createGraphics().drawImage(image1.getBi(), 0, 0, new ImageObserver() {
+                @Override
+                public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
+                    return false;
+                }
+            });
         } else {
-            rgbImage.createGraphics().drawImage(image, 0, 0, null);
+            rgbImage.createGraphics().drawImage(image, 0, 0, new ImageObserver() {
+                @Override
+                public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
+                    return false;
+                }
+            });
         }
         return new Image(rgbImage);
+
+         */
     }
 
     public BufferedImage getBi() {
-        return convertToRGB(bi);
+        return bi;
     }
 
     public void setBi(BufferedImage bi) {
         this.bi = bi;
     }
 
-    private BufferedImage convertToARGB(BufferedImage bi) {
-        return null;
-    }
-
-
     @Override
     public boolean saveToFile(String s) throws IOException {
         Logger.getLogger(getClass().getCanonicalName()).info("Saving as png");
-        return ImageIO.write(convertToRGB(bi), "png", new File(s));
+        return ImageIO.write(getBi(), "png", new File(s));
     }
 
 
@@ -116,7 +126,7 @@ public class Image extends BufferedImage implements IImageMp {
         bi.setRGB(x, y, rgb&0x00FFFFFF);
     }
 
-    public static void saveFile(BufferedImage image, String jpg,File out,
+    public static void saveFile(BufferedImage image, String png,File out,
                                  boolean shouldOverwrite) {
         if(image instanceof Image image1) {
             image1.saveFile(out);

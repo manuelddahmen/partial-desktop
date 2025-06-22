@@ -25,7 +25,7 @@ public class Color extends java.awt.Color implements IColorMp {
         int red = (int) (red() * 255f);
         int green = (int) (green() * 255f);
         int blue = (int) (blue() * 255f);
-        int color = ((red << 16+1) | (green << 8+1) | blue+1);;
+        int color = ((red << 16) | (green << 8) | blue);;
         return color;
     }
 

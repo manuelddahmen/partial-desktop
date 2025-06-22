@@ -48,7 +48,7 @@ public class ColorImageTests {
             Assert.assertNotNull("L'image chargée ne devrait pas être null", image.getBi());
             Assert.assertEquals("La largeur de l'image devrait être 100", 100, image.getWidth());
             Assert.assertEquals("La hauteur de l'image devrait être 100", 100, image.getHeight());
-            Assert.assertEquals("La couleur du pixel (50,50) devrait être rouge", 0x00FF0000 , bufferedImage.getRGB(50, 50));
+            Assert.assertEquals("La couleur du pixel (50,50) devrait être rouge", Color.RED.getRGB() , bufferedImage.getRGB(50, 50));
             Assert.assertEquals("La couleur du pixel (50,50) devrait être rouge", Color.RED.getRGB() , image.getRgb(50, 50));
         } catch (IOException e) {
             e.printStackTrace();
