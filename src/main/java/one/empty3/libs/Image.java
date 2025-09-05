@@ -133,7 +133,7 @@ public class Image extends BufferedImage implements IImageMp {
     }
 
     public static void saveFile(BufferedImage image, String png,File out,
-                                 boolean shouldOverwrite) {
+                                boolean shouldOverwrite) {
         if(image instanceof Image image1) {
             image1.saveFile(out);
             return;
@@ -144,6 +144,28 @@ public class Image extends BufferedImage implements IImageMp {
         }
     }
 
+    /***
+     *
+     * @param image BufferedImage to write to file
+     * @param type            "jpg" or "png"
+     * @param out             File to write to
+     * @param shouldOverwrite test if file already exists overrides or not overrides
+     */
+    public static boolean saveFileAs(BufferedImage image, String type, File out,
+                                boolean shouldOverwrite) {
+        if(image instanceof Image image1) {
+            try {
+                ImageIO.write(image1.getBi(), type, new File(out.getAbsolutePath()));
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE, "Can't try write to file {0} No Image var");
+        }
+        return false;
+    }
     public IImageMp loadFile(File path) {
         try {
             return new Image(ImageIO.read(path));
