@@ -21,12 +21,19 @@ public class Image extends BufferedImage implements IImageMp {
         super(1, 1, image.getType());
         this.bi = image;
     }
-
+    public Image(int la, int ha, int[] pixels) {
+        super(1,1,BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_ARGB);
+        bi.setRGB(0, 0, la, ha, pixels, 0, la);
+        setBi(bi);
+    }
     public Image(File image) {
         super(1, 1, BufferedImage.TYPE_INT_ARGB);
         try {
-            this.bi = ImageIO.read(image);
+            this.bi = JpegOrientation.readNormalized(image);
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -107,7 +114,6 @@ public class Image extends BufferedImage implements IImageMp {
 
     @Override
     public boolean saveToFile(String s) throws IOException {
-        Logger.getLogger(getClass().getCanonicalName()).info("Saving as png");
         return ImageIO.write(getBi(), "png", new File(s));
     }
 
@@ -138,20 +144,20 @@ public class Image extends BufferedImage implements IImageMp {
         }
     }
 
-    public static IImageMp loadFile(File path) {
+    public IImageMp loadFile(File path) {
         try {
             return new Image(ImageIO.read(path));
         } catch (IOException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE, "Image not load from file"+path);
-            return null;
+            Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE, null, e);
         }
+        return null;
     }
-    public void saveFile(File path) {
+    public boolean saveFile(File path) {
         try {
-            saveToFile(path.getAbsolutePath());
-            System.out.println("Image saved to "+path.getAbsolutePath());
+            return saveToFile(path.getAbsolutePath());
         }catch (IOException e) {
-            System.out.println("Image not saved to "+path.getAbsolutePath());
+            Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE, null, e);
+            return false;
         }
     }
     public static Image staticLoadFile(File path) {
