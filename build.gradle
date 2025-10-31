@@ -3,13 +3,13 @@ plugins {
     id("java")
     id 'java-library'
     id 'maven-publish'
-    id 'org.jreleaser' version '1.14.0'
+    id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
+    id 'org.jetbrains.kotlin.jvm' version '2.2.10'
 }
 group = 'one.empty3.libs'
-var versionName = '0.0.33'
-version  = '0.0.33'
+var versionName = '0.0.35'
+version  = versionName
 
 Properties properties = new Properties()
 try {
@@ -81,8 +81,7 @@ java {
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.8.2'
-    implementation 'one.empty3.libs:commons-mp:0.0.13'
-    implementation "com.drewnoakes:metadata-extractor:2.19.0"
+    implementation 'one.empty3.libs:commons-mp:0.0.15'
     testImplementation 'junit:junit:4.13.1'// <--- ADD THIS LINE
 }
 /*

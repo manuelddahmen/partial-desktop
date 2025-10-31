@@ -1,7 +1,6 @@
 package one.empty3.libs;
 
 import one.empty3.libs.commons.IImageMp;
-import org.jetbrains.annotations.Nullable;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -155,7 +154,10 @@ public class Image extends BufferedImage implements IImageMp {
                                 boolean shouldOverwrite) {
         if(image instanceof Image image1) {
             try {
-                ImageIO.write(image1.getBi(), type, new File(out.getAbsolutePath()));
+                if((out.exists()&&shouldOverwrite)||!out.exists()) {
+                    ImageIO.write(image1.getBi(), type, new File(out.getAbsolutePath()));
+                } else
+                    return false;
                 return true;
             } catch (IOException e) {
                 e.printStackTrace();
