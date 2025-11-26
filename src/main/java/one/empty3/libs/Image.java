@@ -113,7 +113,15 @@ public class Image extends BufferedImage implements IImageMp {
 
     @Override
     public boolean saveToFile(String s) throws IOException {
-        return ImageIO.write(getBi(), "png", new File(s));
+        if(s.endsWith("png")) {
+            return ImageIO.write(getBi(), "png", new File(s));
+        } else if(s.endsWith("jpg") || s.endsWith("jpeg")) {
+            return ImageIO.write(getBi(), "jpg", new File(s));
+        } else if(s.endsWith("bmp")) {
+            return ImageIO.write(getBi(), "bmp", new File(s));
+        } else {
+            return false;
+        }
     }
 
 
