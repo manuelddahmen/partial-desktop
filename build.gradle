@@ -5,7 +5,7 @@ plugins {
     id 'maven-publish'
     id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '2.2.10'
+    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
 }
 group = 'one.empty3.libs'
 var versionName = '0.0.36'
@@ -56,7 +56,9 @@ java {
     withJavadocJar()
 }
 
-
+tasks.named("compileJava") {
+    doNotTrackState()
+}
 signing {
     def signingKey = load.get("signing.keyId")
     def signingPassword = load.get("signing.password")

@@ -120,7 +120,7 @@ public class Image extends BufferedImage implements IImageMp {
         } else if(s.endsWith("bmp")) {
             return ImageIO.write(getBi(), "bmp", new File(s));
         } else {
-            return false;
+            return ImageIO.write(getBi(), s.substring(s.lastIndexOf(".")+1), new File(s));
         }
     }
 
