@@ -56,9 +56,7 @@ java {
     withJavadocJar()
 }
 
-tasks.named("compileJava") {
-    doNotTrackState()
-}
+
 signing {
     def signingKey = load.get("signing.keyId")
     def signingPassword = load.get("signing.password")
