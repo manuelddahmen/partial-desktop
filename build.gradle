@@ -5,10 +5,10 @@ plugins {
     id 'maven-publish'
     id 'org.jreleaser' version '1.20.0'
     id 'signing'
-    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
+    id 'org.jetbrains.kotlin.jvm' version '2.3.0'
 }
 group = 'one.empty3.libs'
-var versionName = '0.0.36'
+var versionName = '0.0.37-25'
 version  = versionName
 
 Properties properties = new Properties()
@@ -71,7 +71,7 @@ signing {
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
@@ -81,7 +81,7 @@ java {
 dependencies {
     //implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.8.2'
-    implementation 'one.empty3.libs:commons-mp:0.0.15'
+    implementation 'one.empty3.libs:commons-mp:0.0.16-25'
     testImplementation 'junit:junit:4.13.1'// <--- ADD THIS LINE
 }
 /*
