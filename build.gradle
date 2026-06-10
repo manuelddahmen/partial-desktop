@@ -38,7 +38,7 @@ try {
 
 
 tasks.register('copyDeps', Copy) {
-    from(configurations.compile + configurations.testCompile) {
+    from(configurations.runtimeClasspath + configurations.testRuntimeClasspath) {
         include "**/*.jar"
         include "**/*.xml"
         include "**/*.properties"
