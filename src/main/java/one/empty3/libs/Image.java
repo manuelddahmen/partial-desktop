@@ -20,12 +20,14 @@ public class Image extends BufferedImage implements IImageMp {
         super(1, 1, image.getType());
         this.bi = image;
     }
+
     public Image(int la, int ha, int[] pixels) {
-        super(1,1,BufferedImage.TYPE_INT_ARGB);
+        super(1, 1, BufferedImage.TYPE_INT_ARGB);
         BufferedImage bi = new BufferedImage(la, ha, BufferedImage.TYPE_INT_ARGB);
         bi.setRGB(0, 0, la, ha, pixels, 0, la);
         setBi(bi);
     }
+
     public Image(File image) {
         super(1, 1, BufferedImage.TYPE_INT_ARGB);
         try {
@@ -36,16 +38,19 @@ public class Image extends BufferedImage implements IImageMp {
             throw new RuntimeException(e);
         }
     }
+
     public Image(int x, int y, int type) {
         super(x, y, type);
         this.bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
     }
+
     public Image(int x, int y) {
-        super(1,1,BufferedImage.TYPE_INT_ARGB);
+        super(1, 1, BufferedImage.TYPE_INT_ARGB);
         bi = new BufferedImage(x, y, BufferedImage.TYPE_INT_ARGB);
     }
+
     public int getRgb(int x, int y) {
-        return bi!=null?bi.getRGB(x, y):this.getRGB(x, y);
+        return bi != null ? bi.getRGB(x, y) : this.getRGB(x, y);
     }
 
     public static IImageMp getFromFile(File file) {
@@ -56,10 +61,11 @@ public class Image extends BufferedImage implements IImageMp {
             return null;
         }
     }
+
     public static IImageMp getFromInputStream(InputStream stream) {
         try {
             BufferedImage write;
-            if((write = ImageIO.read(stream))!=null) {
+            if ((write = ImageIO.read(stream)) != null) {
                 return new Image(write);
             }
         } catch (IOException e) {
@@ -67,11 +73,12 @@ public class Image extends BufferedImage implements IImageMp {
         }
         return null;
     }
+
     public boolean toOutputStream(OutputStream stream) {
         try {
             boolean write = false;
             Logger.getLogger(getClass().getCanonicalName()).info("Saving as png");
-            if(write == ImageIO.write((null != this.bi) ? convertToRGB(bi) : this, "png", stream)) {
+            if (write == ImageIO.write((null != this.bi) ? convertToRGB(bi) : this, "png", stream)) {
                 return true;
             }
         } catch (IOException e) {
@@ -82,24 +89,31 @@ public class Image extends BufferedImage implements IImageMp {
 
     public static BufferedImage convertToRGB(BufferedImage image) {
         return image;
-        /*BufferedImage rgbImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
-        if(image instanceof Image image1) {
-            rgbImage.createGraphics().drawImage(image1.getBi(), 0, 0, new ImageObserver() {
-                @Override
-                public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
-                    return false;
-                }
-            });
-        } else {
-            rgbImage.createGraphics().drawImage(image, 0, 0, new ImageObserver() {
-                @Override
-                public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
-                    return false;
-                }
-            });
-        }
-        return new Image(rgbImage);
-
+        /*
+         * BufferedImage rgbImage = new BufferedImage(image.getWidth(),
+         * image.getHeight(), BufferedImage.TYPE_INT_RGB);
+         * if(image instanceof Image image1) {
+         * rgbImage.createGraphics().drawImage(image1.getBi(), 0, 0, new ImageObserver()
+         * {
+         * 
+         * @Override
+         * public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y,
+         * int width, int height) {
+         * return false;
+         * }
+         * });
+         * } else {
+         * rgbImage.createGraphics().drawImage(image, 0, 0, new ImageObserver() {
+         * 
+         * @Override
+         * public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y,
+         * int width, int height) {
+         * return false;
+         * }
+         * });
+         * }
+         * return new Image(rgbImage);
+         * 
          */
     }
 
@@ -113,17 +127,16 @@ public class Image extends BufferedImage implements IImageMp {
 
     @Override
     public boolean saveToFile(String s) throws IOException {
-        if(s.endsWith("png")) {
+        if (s.endsWith("png")) {
             return ImageIO.write(getBi(), "png", new File(s));
-        } else if(s.endsWith("jpg") || s.endsWith("jpeg")) {
+        } else if (s.endsWith("jpg") || s.endsWith("jpeg")) {
             return ImageIO.write(getBi(), "jpg", new File(s));
-        } else if(s.endsWith("bmp")) {
+        } else if (s.endsWith("bmp")) {
             return ImageIO.write(getBi(), "bmp", new File(s));
         } else {
-            return ImageIO.write(getBi(), s.substring(s.lastIndexOf(".")+1), new File(s));
+            return ImageIO.write(getBi(), s.substring(s.lastIndexOf(".") + 1), new File(s));
         }
     }
-
 
     @Override
     public void setImageToMatrix(int[][] ints) {
@@ -136,12 +149,12 @@ public class Image extends BufferedImage implements IImageMp {
     }
 
     public void setRgb(int x, int y, int rgb) {
-        bi.setRGB(x, y, rgb&0x00FFFFFF);
+        bi.setRGB(x, y, rgb);
     }
 
-    public static void saveFile(BufferedImage image, String png,File out,
-                                boolean shouldOverwrite) {
-        if(image instanceof Image image1) {
+    public static void saveFile(BufferedImage image, String png, File out,
+            boolean shouldOverwrite) {
+        if (image instanceof Image image1) {
             image1.saveFile(out);
             return;
         } else {
@@ -153,16 +166,16 @@ public class Image extends BufferedImage implements IImageMp {
 
     /***
      *
-     * @param image BufferedImage to write to file
+     * @param image           BufferedImage to write to file
      * @param type            "jpg" or "png"
      * @param out             File to write to
      * @param shouldOverwrite test if file already exists overrides or not overrides
      */
     public static boolean saveFileAs(BufferedImage image, String type, File out,
-                                boolean shouldOverwrite) {
-        if(image instanceof Image image1) {
+            boolean shouldOverwrite) {
+        if (image instanceof Image image1) {
             try {
-                if((out.exists()&&shouldOverwrite)||!out.exists()) {
+                if ((out.exists() && shouldOverwrite) || !out.exists()) {
                     ImageIO.write(image1.getBi(), type, new File(out.getAbsolutePath()));
                 } else
                     return false;
@@ -172,10 +185,12 @@ public class Image extends BufferedImage implements IImageMp {
                 return false;
             }
         } else {
-            Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE, "Can't try write to file {0} No Image var");
+            Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE,
+                    "Can't try write to file {0} No Image var");
         }
         return false;
     }
+
     public IImageMp loadFile(File path) {
         try {
             return new Image(ImageIO.read(path));
@@ -184,14 +199,16 @@ public class Image extends BufferedImage implements IImageMp {
         }
         return null;
     }
+
     public boolean saveFile(File path) {
         try {
             return saveToFile(path.getAbsolutePath());
-        }catch (IOException e) {
+        } catch (IOException e) {
             Logger.getLogger(Image.class.getCanonicalName()).log(Level.SEVERE, null, e);
             return false;
         }
     }
+
     public static Image staticLoadFile(File path) {
         Image image = new Image(path);
         try {

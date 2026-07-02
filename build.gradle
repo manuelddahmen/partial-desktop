@@ -8,7 +8,7 @@ plugins {
     //id 'org.jetbrains.kotlin.jvm' version '2.3.0'
 }
 group = 'one.empty3.libs'
-var versionName = '0.0.39-17'
+var versionName = '0.0.40-17'
 version  = versionName
 var JAVA_VERSION = 17
 Properties properties = new Properties()
